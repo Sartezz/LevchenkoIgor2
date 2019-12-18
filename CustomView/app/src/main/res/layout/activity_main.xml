@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <com.example.views.CustomView
+        android:id="@+id/customView"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:square_size="60dp"
+        app:square_color="#073FE0"/>
+
+    <Button
+        android:id="@+id/swapColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/customView"
+        android:text="Swap Color" />
+
+</RelativeLayout>
