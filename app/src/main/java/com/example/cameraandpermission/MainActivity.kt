@@ -43,6 +43,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        scanner.setOnClickListener {
+            val  blankFragment =   BlankFragment.newInstance()
+
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_holder, blankFragment)
+                .commit()
+        }
+
         viewFinder.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
             updateTransform()
         }
@@ -117,6 +126,7 @@ class MainActivity : AppCompatActivity() {
         val qrCodeAnalyzer = QrCodeAnalyzer { qrCodes ->
             qrCodes.forEach {
                 Log.d("aaa", "aaa ${it.rawValue}")
+                Toast.makeText(this, "aaa ${it.rawValue}", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -143,4 +153,6 @@ class MainActivity : AppCompatActivity() {
 
         viewFinder.setTransform(matrix)
     }
+
+
 }
