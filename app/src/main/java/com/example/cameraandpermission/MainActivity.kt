@@ -15,9 +15,7 @@ import android.view.TextureView
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.camera.core.CameraX
-import androidx.camera.core.Preview
-import androidx.camera.core.PreviewConfig
+import androidx.camera.core.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
@@ -82,7 +80,11 @@ class MainActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 viewFinder.post { startCamera() }
             } else {
-                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                        this,
+                        Manifest.permission.CAMERA
+                    )
+                ) {
                     Toast.makeText(this, "asdasdasd granted", Toast.LENGTH_LONG).show()
 
                 }
@@ -92,7 +94,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startCamera() {
-        Log.d("aaa","aaa")
+        Log.d("aaa", "aaa")
         val previewConfig = PreviewConfig.Builder().apply {
             setTargetResolution(Size(1920, 1080))
         }.build()
@@ -109,8 +111,18 @@ class MainActivity : AppCompatActivity() {
             viewFinder.surfaceTexture = it.surfaceTexture
             updateTransform()
         }
-        CameraX.bindToLifecycle(this, preview)
 
+        val imageAnalysisConfig = ImageAnalysisConfig.Builder().build()
+        val imageAnalysis = ImageAnalysis(imageAnalysisConfig)
+        val qrCodeAnalyzer = QrCodeAnalyzer { qrCodes ->
+            qrCodes.forEach {
+                Log.d("aaa", "aaa ${it.rawValue}")
+            }
+        }
+
+        imageAnalysis.setAnalyzer(executor, qrCodeAnalyzer)
+
+        CameraX.bindToLifecycle(this, preview)
     }
 
     private fun updateTransform() {
