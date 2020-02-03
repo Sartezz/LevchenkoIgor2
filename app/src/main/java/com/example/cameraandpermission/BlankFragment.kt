@@ -19,12 +19,6 @@ class BlankFragment : Fragment(), ZXingScannerView.ResultHandler {
     private lateinit var scannerView: ZXingScannerView
     private lateinit var txtResult: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,13 +30,25 @@ class BlankFragment : Fragment(), ZXingScannerView.ResultHandler {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scannerView = ZXingScannerView(context)
+        scannerView = scanner_view
         scannerView.setResultHandler(this)
         txtResult = text_view
     }
 
+    override fun onResume() {
+        super.onResume()
+        scannerView.setResultHandler(this)
+        scannerView.startCamera()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        scannerView.stopCamera()
+    }
+
     override fun handleResult(rawResult: Result?) {
         txtResult.text = rawResult?.text ?: "Empty"
+        scannerView.resumeCameraPreview(this)
     }
 
     companion object {
